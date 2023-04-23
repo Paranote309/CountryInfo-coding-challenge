@@ -1,23 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import React, { useState } from "react";
 
 function App() {
+  const [country, setCountry] = useState("");
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/country/${country}`
+      );
+      const data = await response.json();
+      console.log(data); // TODO: Render country information to user
+    } catch (error) {
+      console.error(error);
+      // TODO: Render error message to user
+    }
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <form onSubmit={handleSubmit}>
+        <label>
+          Enter a country:
+          <input
+            type="text"
+            value={country}
+            onChange={(event) => setCountry(event.target.value)}
+          />
+        </label>
+        <button type="submit">Search</button>
+      </form>
     </div>
   );
 }
