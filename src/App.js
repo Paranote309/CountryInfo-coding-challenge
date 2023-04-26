@@ -5,34 +5,39 @@ function App() {
   const [country, setCountry] = useState("");
   const [countryData, setCountryData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true);
     setCountryData(null);
-    setError(null);
+    setErrorMessage(null);
+
     try {
       const response = await fetch(
         `http://localhost:5000/api/country/${country}`
       );
+      if (!response.ok) {
+        throw new Error(`Request failed with status ${response.status}`);
+      }
       const data = await response.json();
       console.log(data); // TODO: Render country information to user
       setIsLoading(false);
       setCountryData(data);
     } catch (error) {
-      console.error(error);
       // TODO: Render error message to user
       setIsLoading(false);
-      setError("Unable to fetch country information");
+      setErrorMessage("Unable to fetch country information");
+      console.log(errorMessage);
     }
   };
 
   return (
     <div className="App">
+      <div class="title">Country Info</div>
       <form onSubmit={handleSubmit}>
         <label>
-          Enter a country:
+          Enter A Country:
           <input
             type="text"
             value={country}
@@ -43,7 +48,8 @@ function App() {
       </form>
 
       {isLoading && <div>Loading...</div>}
-      {error && <div>{error}</div>}
+      {/* {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>} */}
+      <p style={{ color: "red" }}>{errorMessage}</p>
       {countryData && (
         <div>
           {/* <h2>{countryData.name}</h2>
