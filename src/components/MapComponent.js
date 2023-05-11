@@ -10,7 +10,7 @@ export default function MapComponent({ countryData }) {
           allowfullscreen
           referrerpolicy="no-referrer-when-downgrade"
           src={
-            "https://www.google.com/maps/embed/v1/place?key=AIzaSyCfV4IL4KxjsgJ9EzNxv6uSYZZRhV2EHu0&q=" +
+            "https://www.google.com/maps/embed/v1/place?key=" +
             countryData.name.common
           }
         />
